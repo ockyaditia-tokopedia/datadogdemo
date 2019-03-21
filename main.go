@@ -8,8 +8,6 @@ import (
 	"github.com/DataDog/datadog-go/statsd"
 )
 
-type ()
-
 func main() {
 	c, err := statsd.New("ipdatadog")
 	if err != nil {
@@ -29,7 +27,7 @@ func main() {
 
 	if resp.StatusCode != http.StatusOK {
 		c.Tags = append(c.Tags, "failed")
-		log.Println("Success")
+		log.Println("Status Code is not 200")
 		err = c.Count("service.count.nakama.academy", 1, nil, 1)
 		return
 	}
