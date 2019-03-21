@@ -26,20 +26,18 @@ func main() {
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		c.Tags = append(c.Tags, "failed")
 		log.Println("Status Code is not 200")
-		err = c.Count("service.count.nakama.academy", 1, nil, 1)
+		c.Tags = append(c.Tags, "failed")
 		return
+	} else {
+		bodyBytes, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			log.Fatal("ReadAll: ", err)
+			return
+		}
+		log.Println(string(bodyBytes))
+		log.Println("Success")
+		c.Tags = append(c.Tags, "success")
 	}
-
-	bodyBytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal("ReadAll: ", err)
-		return
-	}
-
-	log.Println(string(bodyBytes))
-	log.Println("Success")
-	c.Tags = append(c.Tags, "success")
 	err = c.Count("service.count.nakama.academy", 1, nil, 1)
 }
